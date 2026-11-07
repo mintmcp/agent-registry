@@ -1,0 +1,55 @@
+name: Template checks
+
+# Checks that need context outside a single template: the base ref (a
+# changed template must bump its version) and mcp-registry (every connector
+# slug must exist there).
+on:
+  pull_request:
+    paths:
+      - agents-catalog/**
+
+concurrency:
+  group: template-checks-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    name: Versions and connectors
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # mcp-registry is internal to the d8e-ai org, so this repo's default
+      # token can't read it; the secret needs contents:read on it.
+      - uses: actions/checkout@v4
+        with:
+          repository: d8e-ai/mcp-registry
+          token: ${{ secrets.MCP_REGISTRY_READ_TOKEN }}
+          path: .mcp-registry
+          sparse-checkout: src/catalog.json
+          sparse-checkout-cone-mode: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: package.json
+          cache: npm
+
+      - run: npm ci
+
+      - name: Changed templates
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          git fetch --no-tags --depth=1 origin "$BASE_SHA"
+          npm run --silent changed-slugs -- "$BASE_SHA"
+
+      - name: Version bumped on changed templates
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: npm run check-versions -- "$BASE_SHA"
+
+      - name: Connector slugs exist in mcp-registry
+        run: npm run check-connectors -- --catalog .mcp-registry/src/catalog.json
