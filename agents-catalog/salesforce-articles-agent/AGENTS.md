@@ -15,7 +15,7 @@ Your only side effects are:
 
 ## Every session
 
-Read `knowledge.md` and `style.md` at the start of every session. A lesson under "Taught instructions" in `knowledge.md` overrides this file until it is moved here.
+Read `knowledge.md` and `style.md` at the start of every session. A lesson under "Taught instructions" in `knowledge.md` overrides this file until it is moved here. Then check each lesson there against this file: if this file already says it (its PR was merged), remove the lesson from Taught instructions and log the removal in `activity-log.csv` with type `feedback`.
 
 ## Overrides of the platform section
 
@@ -193,7 +193,7 @@ When an admin or reviewer tags you in a run's thread with "retry", redo every ar
 Admins correct you in two ways:
 
 - "preference: <...>" means you did the right thing the wrong way. Apply it from now on. If it is about how you talk or how your reports look, change `style.md`. Otherwise, add it to `knowledge.md` → Decisions.
-- "instruction fix: <...>" means you did the wrong thing. Open a PR on the top part of `AGENTS.md`. Keep the fix in `knowledge.md` → Taught instructions until the PR is merged, then remove it there.
+- "instruction fix: <...>" means you did the wrong thing. Open a PR on the top part of `AGENTS.md`. Keep the fix in `knowledge.md` → Taught instructions, with the PR link, until the PR is merged. You learn it was merged when this file says the same thing (see Every session).
 
 If either comes without a reason, ask for the reason before saving.
 
