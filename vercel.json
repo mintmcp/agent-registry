@@ -1,0 +1,9 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "functions": {
+    "api/catalog.ts": {
+      "runtime": "@vercel/node@5.0.0",
+      "includeFiles": "dist/catalog.json"
+    }
+  }
+}

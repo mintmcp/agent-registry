@@ -1,0 +1,44 @@
+{
+  "name": "@mintmcp/agent-registry",
+  "version": "0.1.0",
+  "description": "MintMCP coworker agent catalog: templates any org can install as a coworker agent.",
+  "type": "module",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json && tsx scripts/buildCatalogJson.ts",
+    "build-catalog-json": "tsx scripts/buildCatalogJson.ts",
+    "vercel-build": "tsc -p tsconfig.build.json && tsx scripts/buildCatalogJson.ts",
+    "validate": "tsx scripts/validate.ts",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "format": "biome format --write .",
+    "format:check": "biome format .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "changed-slugs": "tsx scripts/changedSlugs.ts",
+    "check-versions": "tsx scripts/checkVersions.ts",
+    "check-connectors": "tsx scripts/checkConnectors.ts",
+    "extract": "tsx scripts/extract.ts"
+  },
+  "dependencies": {
+    "yaml": "^2.8.1",
+    "zod": "^4.2.1"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.4.15",
+    "@types/node": "^25.6.2",
+    "@vercel/node": "^5.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.4.0",
+    "vitest": "^4.1.6"
+  },
+  "engines": {
+    "node": ">=20.10"
+  }
+}
