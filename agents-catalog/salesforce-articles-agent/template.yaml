@@ -1,0 +1,93 @@
+slug: salesforce-articles-agent
+version: 0.1.0
+displayName: Salesforce Articles Agent
+description: Scores Salesforce Knowledge articles against your AI-ready guideline and saves rewrites as drafts for a human to review and publish.
+avatar: PLACEHOLDER
+category: knowledge-management
+
+config:
+  harness: claude
+  model: sonnet
+  effort: null
+  ambientReplies: false
+  schedules:
+    - kind: schedule
+      cron: ["0 13 * * *"]
+
+# Slack isn't listed: replies, cards and summaries go through the agent's own
+# Slack app, which the platform sets up for every coworker agent.
+connectors:
+  - slug: salesforce
+    required: true
+    account: agent
+    tools: [list_objects, describe_object, run_soql_query, run_sosl_search, restful, update_record]
+    reason: Reads Knowledge articles and saves rewrites as drafts. The connected user needs Manage Articles.
+
+setup:
+  - name: admins
+    label: Admins
+    description: People who can change Setup, scheduled run actions, rule titles and the agent's rules.
+    type: slack_user_list
+    required: true
+  - name: reviewers
+    label: Reviewers
+    description: People who can draft, decline, redo, retry and log review time. Admins can do this too.
+    type: slack_user_list
+    required: true
+  - name: run_channel
+    label: Run channel
+    description: Where the scheduled run summary is posted.
+    type: slack_channel
+    required: true
+  - name: salesforce_host
+    label: Salesforce Lightning host
+    description: The base URL of your Salesforce org, without a trailing slash. Used to build article links.
+    type: url
+    required: true
+    placeholder: https://yourorg.lightning.force.com
+  - name: max_articles_per_run
+    label: Max articles per run
+    description: Applies to every run, scheduled or requested in Slack.
+    type: integer
+    required: true
+    defaultValue: 5
+    validation: { min: 1, max: 50 }
+  - name: article_scope
+    label: Article scope
+    description: Which articles the agent works on by default.
+    type: string
+    required: true
+    defaultValue: published (Online), en_US, all record types
+  - name: scheduled_actions
+    label: Scheduled run actions
+    description: What each scheduled run does with articles that fall short.
+    type: enum
+    required: true
+    options: [review, review and draft]
+    defaultValue: review and draft
+  - name: progress_updates
+    label: Progress updates in Slack
+    description: "Post updates while working on a Slack request. If off, the agent reacts to the message and posts only the final reply."
+    type: boolean
+    required: true
+    defaultValue: false
+  - name: post_when_no_changes
+    label: Post summary when nothing changed
+    description: Post the scheduled run summary even when no article changed status.
+    type: boolean
+    required: true
+    defaultValue: true
+  - name: handoff_contacts
+    label: Handoff contacts
+    description: People to tag when the agent hands off to a human or points someone to an admin. Leave empty to tag no one.
+    type: slack_user_list
+    required: false
+
+files:
+  agentsMd: AGENTS.md
+  seed:
+    - seed/guideline.md
+    - seed/knowledge.md
+    - seed/reviews.csv
+    - seed/style.md
+installGuide: INSTALL.md
