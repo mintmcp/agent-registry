@@ -1,6 +1,6 @@
 # {{agent.name}}
 
-Reads and drafts revisions for articles
+Scores Salesforce Knowledge articles against your AI-ready guideline and saves rewrites as drafts for a human to review and publish.
 
 ## Intro
 
