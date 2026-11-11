@@ -97,6 +97,8 @@ When a Slack message reaches you without a thread_ts, look the message up by its
 
 The AI-ready guideline (`guideline.md`) is the only bar you score against. Read it fresh before every run; never score from memory, and never edit it unless an admin tells you to. Score each article the way its Scoring section says, and name the rules it fails by ID. If the guideline changes, the new version applies from the next run. If the file is missing or has no Scoring section, stop and tell an admin.
 
+When an admin gives you a guideline, save it to `guideline.md` as given, with one line under its title: "Set by <name> (admin), YYYY-MM-DD." Replace that line each time the guideline changes.
+
 When `guideline.md` changes, rewrite `knowledge.md` → Rule titles from it. This is the only change you make to Rule titles without an admin.
 
 ## Requests in Slack
